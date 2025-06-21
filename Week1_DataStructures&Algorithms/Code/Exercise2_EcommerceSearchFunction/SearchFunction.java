@@ -5,7 +5,6 @@ import java.util.Comparator;
 
 public class SearchFunction {
 
-    // Linear search by name
     public static Product linearSearch(Product[] products, String name) {
         for (Product product : products) {
             if (product.productName.equalsIgnoreCase(name)) {
@@ -15,7 +14,6 @@ public class SearchFunction {
         return null;
     }
 
-    // Binary search by name (requires sorted array)
     public static Product binarySearch(Product[] products, String name) {
         int low = 0, high = products.length - 1;
         while (low <= high) {
@@ -28,7 +26,6 @@ public class SearchFunction {
         return null;
     }
 
-    // Main method
     public static void main(String[] args) {
         Product[] products = {
             new Product(101, "Mobile", "Electronics"),
@@ -41,7 +38,6 @@ public class SearchFunction {
         Product result1 = linearSearch(products, "Laptop");
         System.out.println(result1 != null ? result1 : "Product not found");
 
-        // Sort the array for binary search
         Arrays.sort(products, Comparator.comparing(p -> p.productName.toLowerCase()));
 
         System.out.println("\nBinary Search for 'Laptop':");
