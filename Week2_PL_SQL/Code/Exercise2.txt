@@ -1,0 +1,99 @@
+Scenario 1:
+CREATE TABLE savings_accounts (
+  account_id NUMBER PRIMARY KEY,
+  customer_name VARCHAR2(50),
+  balance NUMBER(10, 2)
+);
+
+INSERT INTO savings_accounts VALUES (101, 'Alice', 10000);
+INSERT INTO savings_accounts VALUES (102, 'Bob', 5000);
+INSERT INTO savings_accounts VALUES (103, 'Charlie', 20000);
+
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest IS
+BEGIN
+  UPDATE savings_accounts
+  SET balance = balance + (balance * 0.01);
+  
+  COMMIT;
+END;
+
+BEGIN
+  ProcessMonthlyInterest;
+END;
+
+
+Scenario 2:
+CREATE TABLE employees (
+  emp_id NUMBER PRIMARY KEY,
+  name VARCHAR2(50),
+  department VARCHAR2(50),
+  salary NUMBER(10, 2)
+);
+
+INSERT INTO employees VALUES (1, 'John', 'HR', 30000);
+INSERT INTO employees VALUES (2, 'Jane', 'Finance', 40000);
+INSERT INTO employees VALUES (3, 'Tom', 'HR', 35000);
+
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus (
+  dept_name IN VARCHAR2,
+  bonus_percent IN NUMBER
+) IS
+BEGIN
+  UPDATE employees
+  SET salary = salary + (salary * (bonus_percent / 100))
+  WHERE department = dept_name;
+
+  COMMIT;
+END;
+
+BEGIN
+  UpdateEmployeeBonus('HR', 10);
+END;
+
+
+Scenario 3:
+CREATE TABLE accounts (
+  account_id NUMBER PRIMARY KEY,
+  customer_name VARCHAR2(50),
+  balance NUMBER(10, 2)
+);
+
+INSERT INTO accounts VALUES (201, 'Alice', 15000);
+INSERT INTO accounts VALUES (202, 'Bob', 10000);
+
+CREATE OR REPLACE PROCEDURE TransferFunds (
+  from_acc IN NUMBER,
+  to_acc IN NUMBER,
+  amount IN NUMBER
+) IS
+  insufficient_balance EXCEPTION;
+BEGIN
+  -- Check balance
+  DECLARE
+    source_balance NUMBER;
+  BEGIN
+    SELECT balance INTO source_balance FROM accounts WHERE account_id = from_acc;
+
+    IF source_balance < amount THEN
+      RAISE insufficient_balance;
+    END IF;
+
+    UPDATE accounts
+    SET balance = balance - amount
+    WHERE account_id = from_acc;
+
+    UPDATE accounts
+    SET balance = balance + amount
+    WHERE account_id = to_acc;
+
+    COMMIT;
+  END;
+
+EXCEPTION
+  WHEN insufficient_balance THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Insufficient funds in source account');
+END;
+
+BEGIN
+  TransferFunds(201, 202, 2000);
+END;
