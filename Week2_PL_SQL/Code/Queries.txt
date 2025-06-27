@@ -1,0 +1,43 @@
+Scenario 1:
+BEGIN
+  FOR cust IN (SELECT customer_id, age, loan_interest_rate FROM customers) LOOP
+    IF cust.age > 60 THEN
+      UPDATE customers
+      SET loan_interest_rate = loan_interest_rate - 1
+      WHERE customer_id = cust.customer_id;
+    END IF;
+  END LOOP;
+  COMMIT;
+END;
+
+
+Scenario 2:
+BEGIN
+  FOR cust IN (SELECT customer_id, balance FROM customers) LOOP
+    IF cust.balance > 10000 THEN
+      UPDATE customers
+      SET isVIP = 'TRUE'
+      WHERE customer_id = cust.customer_id;
+    END IF;
+  END LOOP;
+  COMMIT;
+END;
+
+
+Scenario 3:
+BEGIN
+  FOR loan_rec IN (
+    SELECT loan_id, customer_id, due_date
+    FROM loans
+    WHERE due_date BETWEEN SYSDATE AND SYSDATE + 30
+  ) LOOP
+    INSERT INTO reminders (message)
+    VALUES (
+      'Reminder: Loan ID ' || loan_rec.loan_id || 
+      ' for Customer ID ' || loan_rec.customer_id || 
+      ' is due on ' || TO_CHAR(loan_rec.due_date, 'DD-MON-YYYY')
+    );
+  END LOOP;
+
+  COMMIT;
+END;
