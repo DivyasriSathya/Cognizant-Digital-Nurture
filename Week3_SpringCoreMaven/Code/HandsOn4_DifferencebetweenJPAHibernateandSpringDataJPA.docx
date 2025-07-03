@@ -1,0 +1,119 @@
+1.pom.xml
+  <dependencies>
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>5.6.15.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version>
+    </dependency>
+</dependencies>
+
+
+  2.hibernate.cfg.xml
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/testdb</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="show_sql">true</property>
+
+        <mapping class="com.example.model.Employee"/>
+    </session-factory>
+</hibernate-configuration>
+
+
+3.Employee.java
+package com.example.model;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "employee")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
+    // getters and setters
+}
+
+
+4.HibernateUtil.java
+  package com.example.util;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class HibernateUtil {
+    private static final SessionFactory sessionFactory;
+
+    static {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+    }
+
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+}
+
+
+5.EmployeeDAO.java
+  package com.example.dao;
+
+import com.example.model.Employee;
+import com.example.util.HibernateUtil;
+import org.hibernate.*;
+
+public class EmployeeDAO {
+    public Integer addEmployee(Employee emp) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        Integer id = null;
+
+        try {
+            tx = session.beginTransaction();
+            id = (Integer) session.save(emp);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return id;
+    }
+}
+
+
+6.Main.java
+package com.example.main;
+
+import com.example.dao.EmployeeDAO;
+import com.example.model.Employee;
+
+public class Main {
+    public static void main(String[] args) {
+        Employee emp = new Employee();
+        emp.setName("Alice");
+
+        EmployeeDAO dao = new EmployeeDAO();
+        Integer id = dao.addEmployee(emp);
+
+        System.out.println("Employee added with ID: " + id);
+    }
+}
