@@ -1,0 +1,91 @@
+CohortDetails.js
+import React from 'react';
+import styles from './CohortDetails.module.css';
+
+function CohortDetails(props) {
+    const { cohort } = props;
+
+    const headingColor = cohort.currentStatus.toLowerCase() === 'ongoing' ? 'green' : 'blue';
+
+    return (
+        <div className={styles.box}>
+            <h3 style={{ color: headingColor }}>
+                {cohort.cohortCode} - <span>{cohort.technology}</span>
+            </h3>
+            <dl>
+                <dt>Started On</dt>
+                <dd>{cohort.startDate}</dd>
+                <dt>Current Status</dt>
+                <dd>{cohort.currentStatus}</dd>
+                <dt>Coach</dt>
+                <dd>{cohort.coachName}</dd>
+                <dt>Trainer</dt>
+                <dd>{cohort.trainerName}</dd>
+            </dl>
+        </div>
+    );
+}
+
+export default CohortDetails;
+
+
+
+CohortDetails.module.css
+.box {
+    width: 300px;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+  
+  dt {
+    font-weight: 500;
+  }
+
+
+
+App.js
+import React from 'react';
+import CohortDetails from './CohortDetails';
+
+function App() {
+  const cohorts = [
+    {
+      cohortCode: 'INTADMDF10',
+      technology: '.NET FSD',
+      startDate: '22-Feb-2022',
+      currentStatus: 'Scheduled',
+      coachName: 'Aathma',
+      trainerName: 'Jojo Jose',
+    },
+    {
+      cohortCode: 'ADM21JF014',
+      technology: 'Java FSD',
+      startDate: '10-Sep-2021',
+      currentStatus: 'Ongoing',
+      coachName: 'Apoorv',
+      trainerName: 'Elisa Smith',
+    },
+    {
+      cohortCode: 'CDBJF21025',
+      technology: 'Java FSD',
+      startDate: '24-Dec-2021',
+      currentStatus: 'Ongoing',
+      coachName: 'Aathma',
+      trainerName: 'John Doe',
+    },
+  ];
+
+  return (
+    <div>
+      <h2>Cohorts Details</h2>
+      {cohorts.map((cohort, index) => (
+        <CohortDetails key={index} cohort={cohort} />
+      ))}
+    </div>
+  );
+}
+
+export default App;
