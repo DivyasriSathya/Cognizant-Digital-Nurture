@@ -1,0 +1,59 @@
+App.js
+
+import React, { useState } from "react";
+function GuestGreeting() {
+  return (
+    <div style={{ textAlign: "center" }}>
+      <h1>Please Sign Up.</h1>
+      <h3>Browse available flight details below:</h3>
+      <ul>
+        <li>✈ Flight 101 - Chennai → Delhi - ₹4500</li>
+        <li>✈ Flight 202 - Bangalore → Mumbai - ₹5200</li>
+        <li>✈ Flight 303 - Hyderabad → Kolkata - ₹6000</li>
+      </ul>
+    </div>
+  );
+}
+function UserGreeting() {
+  return (
+    <div style={{ textAlign: "center" }}>
+      <h1>Welcome Back!</h1>
+      <h3>You can now book tickets:</h3>
+      <ul>
+        <li>✈ Flight 101 - Chennai → Delhi - ₹4500 <button>Book</button></li>
+        <li>✈ Flight 202 - Bangalore → Mumbai - ₹5200 <button>Book</button></li>
+        <li>✈ Flight 303 - Hyderabad → Kolkata - ₹6000 <button>Book</button></li>
+      </ul>
+    </div>
+  );
+}
+function Greeting(props) {
+  if (props.isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+function LoginButton(props) {
+  return <button onClick={props.onClick}>Login</button>;
+}
+function LogoutButton(props) {
+  return <button onClick={props.onClick}>Logout</button>;
+}
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLoginClick = () => setIsLoggedIn(true);
+  const handleLogoutClick = () => setIsLoggedIn(false);
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "30px" }}>
+      <Greeting isLoggedIn={isLoggedIn} />
+      <br />
+      {isLoggedIn ? (
+        <LogoutButton onClick={handleLogoutClick} />
+      ) : (
+        <LoginButton onClick={handleLoginClick} />
+      )}
+    </div>
+  );
+}
