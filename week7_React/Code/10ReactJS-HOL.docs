@@ -1,0 +1,43 @@
+App.js
+
+import React from "react";
+
+export default function App() {
+  const element = "Office Space";
+
+  const ItemName = { Name: "DBS", Rent: 50000, Address: "Chennai" };
+
+  const officeImage =
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2";
+
+  return (
+    <div style={{ textAlign: "center", fontFamily: "Arial" }}>
+      {/* Heading */}
+      <h1>
+        {element} , at Affordable Range
+      </h1>
+
+      {/* Office Image */}
+      <img
+        src={officeImage}
+        alt="Office Space"
+        width="25%"
+        height="25%"
+        style={{ margin: "10px 0" }}
+      />
+
+      {/* Office Details */}
+      <h2>
+        <b>Name:</b> {ItemName.Name}
+      </h2>
+
+      <h3 style={{ color: ItemName.Rent <= 60000 ? "red" : "green" }}>
+        <b>Rent:</b> Rs. {ItemName.Rent}
+      </h3>
+
+      <h3>
+        <b>Address:</b> {ItemName.Address}
+      </h3>
+    </div>
+  );
+}
