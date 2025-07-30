@@ -1,0 +1,76 @@
+App.js
+
+import React, { useState } from "react";
+export default function App() {
+  const [count, setCount] = useState(1);
+  const [amount, setAmount] = useState("");
+  const [currency, setCurrency] = useState("Euro");
+  const incrementValue = () => setCount(count + 1);
+  const sayHello = () => alert("Hello! Incremented Value");
+  const handleIncrement = () => {
+    incrementValue();
+    sayHello();
+  };
+  const handleDecrement = () => setCount(count - 1);
+  const sayWelcome = (name) => {
+    alert(`Welcome ${name}!`);
+  };
+  const handleClickEvent = () => {
+    alert("I was clicked");
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let result = 0;
+    if (currency === "Euro") {
+      result = amount * 80; // Example conversion 1 Euro = 80 INR
+    }
+    alert(`Converting to ${currency} Amount is ${result}`);
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      {/* Counter */}
+      <h3>{count}</h3>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+
+      <br />
+      <br />
+
+      {/* Say Welcome */}
+      <button onClick={() => sayWelcome("User")}>Say welcome</button>
+
+      <br />
+      <br />
+
+      {/* Synthetic Event */}
+      <button onClick={handleClickEvent}>Click on me</button>
+
+      <br />
+      <br />
+
+      {/* Currency Converter */}
+      <h1 style={{ color: "green" }}>Currency Convertor!!!</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Amount: </label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Currency: </label>
+          <select
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+          >
+            <option value="Euro">Euro</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
