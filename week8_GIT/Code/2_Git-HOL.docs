@@ -1,0 +1,71 @@
+Step 1: Setup Git
+1.1 Check Git is installed
+
+git --version
+1.2 Set your name and email
+
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+1.3 Check configuration
+
+git config --global --list
+You should see both user.name and user.email
+
+Step 2: Create Local Git Repository
+2.1 Create folder and initialize Git
+
+mkdir GitDemo
+cd GitDemo
+git init
+2.2 Create a file
+
+echo "Welcome to GitDemo repository" > welcome.txt
+2.3 Check status
+
+git status
+You will see welcome.txt as an untracked file
+
+2.4 Add and commit the file
+
+git add welcome.txt
+git commit -m "Added welcome.txt"
+Step 3: Setup Remote Git Repository
+Go to GitHub or GitLab
+
+Create new repository named GitDemo
+
+Copy the URL
+
+3.1 Link to remote and push
+
+git remote add origin https://gitlab.com/yourusername/GitDemo.git
+git push -u origin master
+Step 4: Add .log file and log folder, then ignore them
+4.1 Create .log file and log folder
+
+echo "This is a debug log" > debug.log
+mkdir log
+echo "This is inside log folder" > log/info.txt
+4.2 Create .gitignore file
+
+echo "*.log" > .gitignore
+echo "log/" >> .gitignore
+4.3 Check status again
+
+git status
+
+debug.log and log/ are ignored
+
+.gitignore is shown as new file
+
+4.4 Add and commit .gitignore
+
+git add .gitignore
+git commit -m "Added .gitignore to ignore .log files and log folder"
+4.5 Final check
+bash
+Copy
+Edit
+git status
+ You should see:
+nothing to commit, working tree clean
