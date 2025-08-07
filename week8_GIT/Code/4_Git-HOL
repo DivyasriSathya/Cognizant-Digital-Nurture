@@ -1,0 +1,71 @@
+1. Verify if master is in clean state
+git checkout master
+git status
+Output should show: working tree clean
+
+2. Create a branch “GitWork” and add hello.xml
+git checkout -b GitWork
+echo "<message>Hello from GitWork branch</message>" > hello.xml
+git add hello.xml
+
+3. Update hello.xml and observe status
+echo "<update>New update in GitWork branch</update>" >> hello.xml
+git status
+Output: shows hello.xml as modified
+
+4. Commit the changes
+git commit -am "Updated hello.xml in GitWork branch"
+
+5. Switch to master
+git checkout master
+
+6. Add a different version of hello.xml in master
+echo "<message>Different content in master branch</message>" > hello.xml
+git add hello.xml
+
+7. Commit the changes to master
+git commit -m "Added hello.xml with different content in master"
+
+8. View full log graph
+git log --oneline --graph --decorate --all
+
+9. Check differences with Git diff tool (CLI)
+git diff master GitWork
+
+10. View visual differences using P4Merge (optional)
+Only if P4Merge is installed and set up as diff/merge tool
+git difftool master GitWork
+
+11. Merge the branch into master
+git merge GitWork
+A merge conflict will occur due to different content in hello.xml.
+
+12. Observe conflict markup
+Open the conflicted file:
+cat hello.xml
+
+13. Use 3-way merge tool to resolve conflict (if configured)
+If P4Merge is set:
+git mergetool
+Otherwise, manually open hello.xml in any editor and resolve conflict.
+
+14. After resolving, mark as resolved and commit
+git add hello.xml
+git commit -m "Resolved merge conflict in hello.xml"
+
+15. Check status and ignore backup file (e.g., hello.xml.orig)
+git status
+echo "*.orig" >> .gitignore
+
+16. Commit .gitignore
+git add .gitignore
+git commit -m "Ignored backup files in .gitignore"
+
+17. List all available branches
+git branch
+
+18. Delete the merged branch
+git branch -d GitWork
+
+19. Final log view after merge
+git log --oneline --graph --decorate
