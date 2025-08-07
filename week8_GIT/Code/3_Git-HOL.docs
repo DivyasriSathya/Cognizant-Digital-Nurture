@@ -1,0 +1,52 @@
+Branching
+1. Create a new branch GitNewBranch
+git branch GitNewBranch
+  
+2. List all local & remote branches
+git branch -a
+Output shows local branches.
+The current branch is marked with *.
+
+3. Switch to GitNewBranch
+git checkout GitNewBranch
+You’re now on the new branch.
+
+4. Add some files with content
+echo "This is a file in GitNewBranch" > branchfile.txt
+git add branchfile.txt
+
+5. Commit the changes
+git commit -m "Added branchfile.txt in GitNewBranch"
+
+6. Check status
+git status
+Output: working tree clean and on branch GitNewBranch
+
+Merging
+1. Switch to master
+git checkout master
+
+2. List differences between master and branch (CLI)
+git diff master..GitNewBranch
+Shows line-by-line differences in code between the two branches.
+
+3. (Optional) View visual differences using P4Merge
+Only if P4Merge is installed and configured
+git difftool master..GitNewBranch
+Skip this step if P4Merge is not installed.
+
+4. Merge the branch into master
+git merge GitNewBranch
+This brings branchfile.txt into master branch.
+
+5. View merge log (graph view)
+git log --oneline --graph --decorate
+Shows the visual structure of the branching and merging.
+
+6. Delete the branch
+git branch -d GitNewBranch
+Deletes the local branch (safe only if already merged).
+
+7. Final status
+git status
+Should show clean working tree on master.
